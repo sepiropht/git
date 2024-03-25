@@ -9,18 +9,22 @@ import (
 
 func main() {
 	initCmd := flag.NewFlagSet("init", flag.ExitOnError)
+
 	catFileCmd := flag.NewFlagSet("cat-file", flag.ExitOnError)
 	catFilePrettyPrint := catFileCmd.Bool("p", false, "enable")
+
+	writeObjectCmd := flag.NewFlagSet("hash-object", flag.ExitOnError)
+	writeObject := writeObjectCmd.Bool("w", false, "enable")
 
 	switch os.Args[1] {
 	case "init":
 		initCmd.Parse(os.Args[2:])
 		fmt.Println("subcommand 'init'")
 		// Create necessary directories and files for initialization
-		createDir(".jit")
-		createDir(".jit/objects")
-		createDir(".jit/refs")
-		createFile(".jit/HEAD", "ref: refs/heads/main\n")
+		createDir(".git")
+		createDir(".git/objects")
+		createDir(".git/refs")
+		createFile(".git/HEAD", "ref: refs/heads/main\n")
 		fmt.Println("Initialized git directory")
 
 	case "cat-file":
@@ -28,7 +32,8 @@ func main() {
 		commands.CatFile(catFilePrettyPrint, catFileCmd.Args()[0])
 	case "hash-object":
 		// Implement hash-object command
-		fmt.Println("Implementing hash-object command...")
+    writeObjectCmd.Parse(os.Args[2:])
+		commands.HashObject(writeObject, writeObjectCmd.Args()[0])
 	}
 }
 

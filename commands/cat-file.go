@@ -18,11 +18,11 @@ func CatFile(prettyPrint *bool, objectHash string) (string, error) {
 		return "", fmt.Errorf("mode must be given without -p, and we don't support mode")
 	}
 
-	filePath := fmt.Sprintf(".jit/objects/%s/%s", objectHash[:2], objectHash[2:])
+	filePath := fmt.Sprintf(".git/objects/%s/%s", objectHash[:2], objectHash[2:])
 	file, err := os.Open(filePath)
 
 	if err != nil {
-		return "", fmt.Errorf("open in .jit/objects: %w", err)
+		return "", fmt.Errorf("open in .git/objects: %w", err)
 	}
 
 	zReader, err := zlib.NewReader(file)
@@ -46,14 +46,14 @@ func CatFile(prettyPrint *bool, objectHash string) (string, error) {
 	parts := strings.SplitN(headerStr, " ", 2)
 
 	if len(parts) != 2 {
-		return "", fmt.Errorf(".jit/objects file header did not start with a known type: '%s'", headerStr)
+		return "", fmt.Errorf(".git/objects file header did not start with a known type: '%s'", headerStr)
 	}
 
 	kind := parts[0]
 	size := 0
 	sizeU, err := fmt.Sscanf(parts[1], "%d", &size)
 	if err != nil {
-		return "", fmt.Errorf(".jit/objects file header size is not valid: '%s'", parts[1])
+		return "", fmt.Errorf(".git/objects file header size is not valid: '%s'", parts[1])
 	}
 
 	limitedReader := &io.LimitedReader{R: bufReader, N: int64(sizeU)}
