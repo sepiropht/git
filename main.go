@@ -17,10 +17,10 @@ func main() {
 		initCmd.Parse(os.Args[2:])
 		fmt.Println("subcommand 'init'")
 		// Create necessary directories and files for initialization
-		createDir(".git")
-		createDir(".git/objects")
-		createDir(".git/refs")
-		createFile(".git/HEAD", "ref: refs/heads/main\n")
+		createDir(".jit")
+		createDir(".jit/objects")
+		createDir(".jit/refs")
+		createFile(".jit/HEAD", "ref: refs/heads/main\n")
 		fmt.Println("Initialized git directory")
 
 	case "cat-file":
