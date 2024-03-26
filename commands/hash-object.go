@@ -16,7 +16,7 @@ func writeBlob(file string, writer io.Writer) (string, error) {
 		return "", fmt.Errorf("stat %s: %w", file, err)
 	}
 
-  zlibWriter := zlib.NewWriter(writer)
+	zlibWriter := zlib.NewWriter(writer)
 	hasher := sha1.New()
 
 	if _, err := fmt.Fprintf(hasher, "blob %d\x00", stat.Size()); err != nil {
@@ -63,9 +63,9 @@ func HashObject(writeFile *bool, file string) (string, error) {
 
 		destination := filepath.Join(hashDir, hash[2:])
 		if err := os.Rename(tmpFile.Name(), destination); err != nil {
-		  return 	"", fmt.Errorf("Error moving blob file into .git/objects: %v\n", err)
+			return "", fmt.Errorf("Error moving blob file into .git/objects: %v\n", err)
 		}
 	}
 	fmt.Println(hash)
-  return "", nil
+	return "", nil
 }

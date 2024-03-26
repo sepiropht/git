@@ -32,7 +32,7 @@ func main() {
 		commands.CatFile(catFilePrettyPrint, catFileCmd.Args()[0])
 	case "hash-object":
 		// Implement hash-object command
-    writeObjectCmd.Parse(os.Args[2:])
+		writeObjectCmd.Parse(os.Args[2:])
 		commands.HashObject(writeObject, writeObjectCmd.Args()[0])
 	}
 }
