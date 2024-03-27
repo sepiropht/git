@@ -17,13 +17,12 @@ func Read(objectHash string) (string, int64, *bufio.Reader) {
 	if err != nil {
 		fmt.Errorf("open in .git/objects: %w", err)
 	}
-
 	zReader, err := zlib.NewReader(file)
 	if err != nil {
 		fmt.Errorf("create zlib reader: %w", err)
 	}
 
-	defer zReader.Close()
+  defer zReader.Close()
 
 	// Wrap the zlib reader with a buffered reader
 	bufReader := bufio.NewReader(zReader)

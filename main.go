@@ -16,6 +16,9 @@ func main() {
 	writeObjectCmd := flag.NewFlagSet("hash-object", flag.ExitOnError)
 	writeObject := writeObjectCmd.Bool("w", false, "enable")
 
+	lsTreeCmd := flag.NewFlagSet("ls-tree", flag.ExitOnError)
+	lsTreeNameOnly := lsTreeCmd.Bool("name-only", false, "enable")
+
 	switch os.Args[1] {
 	case "init":
 		initCmd.Parse(os.Args[2:])
@@ -34,6 +37,10 @@ func main() {
 		// Implement hash-object command
 		writeObjectCmd.Parse(os.Args[2:])
 		commands.HashObject(writeObject, writeObjectCmd.Args()[0])
+
+	case "ls-tree":
+		lsTreeCmd.Parse(os.Args[2:])
+		commands.LsTree(lsTreeNameOnly, lsTreeCmd.Args()[0])
 	}
 }
 
