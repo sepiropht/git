@@ -22,7 +22,7 @@ func Read(objectHash string) (string, int64, *bufio.Reader) {
 		fmt.Errorf("create zlib reader: %w", err)
 	}
 
-  defer zReader.Close()
+	defer zReader.Close()
 
 	// Wrap the zlib reader with a buffered reader
 	bufReader := bufio.NewReader(zReader)

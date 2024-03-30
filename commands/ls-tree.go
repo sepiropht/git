@@ -1,9 +1,9 @@
 package commands
 
 import (
+	"encoding/hex"
 	"fmt"
 	"git/objects"
-  "encoding/hex"
 	"io"
 	"os"
 	"strings"
@@ -19,26 +19,24 @@ func LsTree(nameOnly *bool, treeHash string) (string, error) {
 			return "", err
 		}
 
-    
 		if len(header) == 0 {
 			break
 		}
 
-    header = header[:len(header)-1]
+		header = header[:len(header)-1]
 
 		modeName := string(header)
 
+		buf := make([]byte, 20)
 
-    buf := make([]byte, 20)
-
-    limitedReader := &io.LimitedReader{R: bufReader, N: 20}
-    n, err := io.ReadFull(limitedReader, buf)
-	  if err != nil {
-		  if err != io.ErrUnexpectedEOF {
-			  fmt.Println("Error reading bytes:", err ,n)
-			  return "", err
-		  }
-    }
+		limitedReader := &io.LimitedReader{R: bufReader, N: 20}
+		n, err := io.ReadFull(limitedReader, buf)
+		if err != nil {
+			if err != io.ErrUnexpectedEOF {
+				fmt.Println("Error reading bytes:", err, n)
+				return "", err
+			}
+		}
 
 		parts := strings.SplitN(modeName, " ", 2)
 
@@ -49,7 +47,7 @@ func LsTree(nameOnly *bool, treeHash string) (string, error) {
 			fmt.Println(name)
 
 		} else {
-      hashString := hex.EncodeToString(buf)
+			hashString := hex.EncodeToString(buf)
 			kind, _, _ := objects.Read(hashString)
 			fmt.Fprintf(os.Stdout, "%06s %s %s    %s", mode, kind, hashString, name)
 		}
@@ -58,4 +56,3 @@ func LsTree(nameOnly *bool, treeHash string) (string, error) {
 	}
 	return "", nil
 }
-
